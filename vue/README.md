@@ -18,6 +18,7 @@ E:.
 
 
 # vue
+Try iconfont
 
 ## Project setup
 ```
