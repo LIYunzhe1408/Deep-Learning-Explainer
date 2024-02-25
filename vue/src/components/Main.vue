@@ -1,56 +1,52 @@
 <template>
   <div>
     <el-row gutter=40 type="flex" style="justify-content: center">
+      <!-- Left -->
       <el-col  :span="7" >
         <div class="boxMain" style="height:500px;">
+          <!-- DONE Topic-->
           <div class="topicMain">
             <div style="font-size: 24px; margin-top: 20px"><b>INPUT IMAGE</b></div>
             <div style="font-size: 14px; color: gray">Choose one image to be predicted by <a href="https://deci.ai/deep-learning-glossary/deep-neural-network-dnn/" class="highlighted">Deep Neural Network</a></div>
           </div>
-          <el-tooltip placement="right">
-            <div slot="content" style="display: flex; width:200px; flex-wrap: wrap">
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-              <el-image class="picBoxMain" style="width: 50px; height: 50px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src=Src3 />
-            </div>
+
+
+          <!-- TODO Move To Concept Extraction-->
             <el-image class="picBoxMain"
                       style="width: 300px; height: 300px; margin-top: 40px; display: flex; justify-content: center; align-items: center"
-                      :src=Src3>
+                      :src=selectedPic.src>
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
               </div>
             </el-image>
-          </el-tooltip>
-
+          {{str}}
           <el-switch
               v-model="switched"
-              active-text="Predict">
+              active-text="Predict"
+              @change="explainPic"
+              style="margin-top: 20px">
           </el-switch>
-
-
         </div>
       </el-col>
 
-      <!--Middle-->
+      <!--DONE Middle-->
       <el-col  :span="5">
         <div class="boxMain" style="height:170px;">
+          <!-- Topic-->
           <div class="topicMain">
             <div style="font-size: 24px; margin-top: 20px"><b>OUTPUT</b></div>
             <div style="font-size: 14px; color: gray">Classification result by the DNN below</div>
           </div>
-          <div style="width:60%; height: 40px; border-left: 5px #1890ff solid; background-color: lightblue; text-align: center; line-height: 40px;
+          <!-- Output-->
+          <div style="width:80%; height: 40px; border-left: 5px #1890ff solid; background-color: lightblue; text-align: center; line-height: 40px;
           margin-top: 30px; font-size: 18px">
-            <b>Tabby</b>
+            <span v-if="switched">
+              <b>{{ selectedPic.class }} - {{selectedPic.id}} - {{selectModel}}</b>
+            </span>
           </div>
-<!--          <el-input-->
-<!--              placeholder="Tabby"-->
-<!--              :disabled="true"-->
-<!--              style="width: 60%; margin-top: 40px">-->
-<!--          </el-input>-->
         </div>
+
+        <!-- Model -->
         <div class="boxMain" style=" height:310px;">
           <div class="topicMain">
             <div style="font-size: 24px; margin-top: 20px"><b>DNN Model</b></div>
@@ -58,7 +54,7 @@
           </div>
           <el-tooltip placement="right">
             <div slot="content" style="display: flex; width:200px; flex-wrap: wrap">
-              <el-image class="picBoxMain" style="width: 250px; height: 500px; margin-top: 40px; display: flex; justify-content: center; align-items: center" :src="require('@/assets/googleNet.png')" />
+              <el-image class="picBoxMain" style="width: 250px; height: 500px; display: flex; justify-content: center; align-items: center" :src="require('@/assets/googleNet.png')" />
             </div>
           <el-image
               style="width: 180px; height: 160px; margin-top: 20px; margin-bottom: 20px"
@@ -71,26 +67,27 @@
       <!--Right-->
       <el-col  :span="9">
         <div class="boxMain" style="width: 100%; height:500px; ">
+          <!-- Topic-->
           <div class="topicMain">
             <div style="font-size: 24px; margin-top: 20px"><b>EXPLANATION</b></div>
             <div style="font-size: 14px; color: gray">Determine which concept part contributes the most</div>
           </div>
 
-          <div style="display: flex; width: 100%; justify-content: space-evenly">
-            <el-image class="picBoxMain"
+          <div style="display: flex; width: 100%; justify-content: space-evenly" >
+            <el-image
+                      class="picBoxMain"
                       style="height: 350px; width: 350px; margin-top: 40px"
-                      :src="require('@/assets/cat.png')" />
+                      :src=this.explainedPic />
             <div class="boxMain" style="width: 220px; margin-top: 40px;">
               <div style="margin-top: 20px; font-size: 20px; color: black"><b>Results</b></div>
               <div style="font-size: 12px; color: gray">Sorted By Contributions</div>
-              <div style="height: 80%; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; background-color:">
+              <div style="height: 80%; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;" v-if="switched">
                 <el-tag class="tagContribution" type="danger" color="red" effect="dark">Head</el-tag>
                 <el-tag class="tagContribution" type="danger"  color="red" effect="dark" style="opacity: 60%">Breast</el-tag>
                 <el-tag class="tagContribution" type="danger" color="red" effect="dark" style="opacity: 20%">Body</el-tag>
               </div>
             </div>
           </div>
-
         </div>
       </el-col>
     </el-row>
@@ -98,19 +95,50 @@
 </template>
 
 <script>
+import bus from "@/common/bus"
 export default {
   name: "Main",
   data() {
     return {
-      predict:'',
-      selectedPicSrc: this.Src3,
-      Src3: require('@/assets/img-3.png'),
+      predict: false,
+      selectModel: '1',
+      selectedPic:{src: require('@/assets/img-3.png'), id:'n02123045', class: 'tabby'},
+      subPics: [
+        {src: require('@/assets/img-3.png'), id:3},
+        {src: require('@/assets/img-3.png'), id:3},
+        {src: require('@/assets/img-3.png'), id:3},
+        {src: require('@/assets/img-3.png'), id:3},
+      ],
+      explainedPic: '',
       switched: false
     }
   },
   methods: {
-    selectPredict() {
-      console.log(this.predict)
+    explainPic() {
+      this.explainedPic = this.switched ? require('@/assets/'+this.selectedPic.class+'.png') : ''
+    },
+
+  },
+  mounted() {
+      bus.$on("toMainPic", (data)=>{
+        this.switched = false
+        this.explainedPic = ''
+        this.selectedPic = data
+      })
+      bus.$on("toMainModel", (data)=>{
+        this.switched = false
+        this.explainedPic = ''
+        this.selectModel = data
+      })
+
+
+  },
+  computed: {
+    str: function () {
+      this.subPics = []
+      for (let i = 0; i < 8; i++) {
+        this.subPics.push(this.selectedPic)
+      }
     }
   }
 }
@@ -130,7 +158,6 @@ export default {
   flex-direction: column
 }
 .picBoxMain{
-  margin-bottom: 20px;
   background-color: white;
   border: lightgray solid;
   border-width: 1px;
@@ -161,5 +188,16 @@ export default {
 .highlighted{
   color: #0a66c2;
   text-decoration-line: none
+}
+.subPics{
+  background-color: white;
+  border: lightgray solid;
+  border-width: 1px;
+  border-radius: 5px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
 </style>

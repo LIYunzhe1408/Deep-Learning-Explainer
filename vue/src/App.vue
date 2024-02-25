@@ -6,7 +6,7 @@
 
 <script>
 import Header from "@/views/Header.vue";
-import Option from "@/views/Option.vue";
+import Option from "@/components/OptionMain.vue";
 import Side from "@/views/SideMenu"
 import SideMenu from "@/views/SideMenu";
 export default {

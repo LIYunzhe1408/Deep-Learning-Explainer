@@ -14,8 +14,8 @@
 
 <script>
 import Header from "@/views/Header.vue";
-import Option from "@/views/Option.vue";
-import Main from '@/views/Main'
+import Option from "@/components/OptionMain.vue";
+import Main from '@/components/Main'
 import SideMenu from "@/views/SideMenu";
 export default {
   name: 'HomeView',

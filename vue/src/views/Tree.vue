@@ -1,21 +1,18 @@
 <template>
   <div>
     <div class="box">
-      <Option/>
+      <OptionTree/>
     </div>
-    <Main/>
+    <MainTree/>
   </div>
 </template>
 
 <script>
-import Option from "@/views/Option";
-import Main from "@/views/Main";
+import OptionTree from "@/components/OptionTree";
+import MainTree from "@/components/MainTree";
 export default {
-  name: "initial",
-  components: {
-    Option,
-    Main
-  }
+  name: "Tree",
+  components: {MainTree, OptionTree}
 }
 </script>
 

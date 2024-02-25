@@ -1,22 +1,18 @@
 <template>
   <div>
     <div class="box">
-      <optionExtraction/>
+      <option-extraction/>
     </div>
-    <MainExtraction/>
+    <MainExplanation/>
   </div>
-
 </template>
 
 <script>
-import optionExtraction from "@/components/OptionExtraction";
-import MainExtraction from "@/components/MainExtraction";
+import OptionExtraction from "@/components/OptionExtraction";
+import MainExplanation from "@/components/MainExplanation";
 export default {
-  name: "Extraction",
-  components: {
-    MainExtraction,
-    optionExtraction
-  }
+  name: "Explanation",
+  components: {MainExplanation, OptionExtraction}
 }
 </script>
 

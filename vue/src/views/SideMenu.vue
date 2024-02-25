@@ -9,15 +9,15 @@
         <i class="el-icon-s-data"></i>
         <span slot="title" style="font-size: 14px">Concept Extraction</span>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item  index="/tree">
         <i class="el-icon-grape"></i>
         <span slot="title" style="font-size: 14px">Concept Tree</span>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item index="/explanation">
         <i class="el-icon-connection"></i>
         <span slot="title" style="font-size: 14px">Explanation</span>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item index="/settings">
         <i class="el-icon-setting"></i>
         <span slot="title" style="font-size: 14px">System</span>
       </el-menu-item>

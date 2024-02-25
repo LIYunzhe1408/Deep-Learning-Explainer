@@ -1,26 +1,30 @@
 <template>
   <div>
-    <el-row style="display: flex; ">
+    <el-row>
+      <!-- Option Pictures-->
+      <!-- TODO 增加更多可以切换的图片-->
       <el-col :span="6" style="display:flex; margin: 5px 0 5px 0; justify-content: space-around">
         <div style="line-height: 120px"><i class="el-icon-caret-left"/></div>
-        <el-image id="pic1"
-                  class="picBoxOptionNotActive"
-                  :src="require('@/assets/img-1.png')"
-                  @click="selectPic"/>
-        <el-image id="pic2"
-                  class="picBoxOptionNotActive"
-                  :src="require('@/assets/img-2.png')" />
-        <el-image id="pic3"
-                  class="picBoxOptionActive"
-                  :src="require('@/assets/img-3.png')" />
+
+        <div v-for="item in optionPics" :key="item.id">
+          <el-image v-if="item.id === picID"
+                    class= "picBoxOptionActive"
+                    :src="item.src"
+                    @click="selectPic(item)"/>
+          <el-image v-else
+                    class= "picBoxOptionNotActive"
+                    :src="item.src"
+                    @click="selectPic(item)"/>
+        </div>
         <div style="line-height: 120px"><i class="el-icon-caret-right"/></div>
       </el-col>
 
-
+      <!-- DONE Transition Column-->
       <el-col :span="14">
         <div style="width:100%; height: 120px;"></div>
       </el-col>
 
+      <!-- DONE Semantic Segmentation Model Chooser-->
       <el-col :span="3">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
@@ -29,7 +33,11 @@
           </div>
 
           <el-select filterable placeholder="Select Model"  v-model="select">
-            <el-option v-for="item in models" :key="item.id" :label="item.label" :value="item.label"></el-option>
+            <el-option v-for="item in models"
+                       :key="item.id"
+                       :label="item.label"
+                       :value="item.id"
+                       @click.native="selectModel(item.id)"> </el-option>
           </el-select>
         </div>
       </el-col>
@@ -38,12 +46,19 @@
 </template>
 
 <script>
+import bus from "@/common/bus"
+
 export default {
   name: "Option",
   data() {
     return {
-      select: 'DeepLabV3',
-      picID: 'pic3',
+      select: '1',
+      picID: 'n02123045',
+      optionPics: [
+        {src: require('@/assets/img-1.png'), id: 'n02389026', class: "sorrel"},
+        {src: require('@/assets/img-2.png'), id: 'n01560419', class: "bulbul"},
+        {src: require('@/assets/img-3.png'), id: 'n02123045', class: "tabby"},
+      ],
       models: [
         {label: "DeepLabV3", id: '1'},
         {label: "FCN", id: '2'},
@@ -52,8 +67,13 @@ export default {
     }
   },
   methods: {
-    selectPic() {
-
+    selectPic(item) {
+      this.picID = item.id
+      bus.$emit("toMainPic", item);
+    },
+    selectModel(id) {
+      this.select = id
+      bus.$emit("toMainModel", this.select)
     }
   }
 }
