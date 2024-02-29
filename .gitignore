@@ -2,3 +2,6 @@ requirement
 node_modules
 *.iml
 test_explainer
+dataset
+data_cal
+image data

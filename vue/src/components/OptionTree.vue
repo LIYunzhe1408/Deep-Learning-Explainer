@@ -3,7 +3,7 @@
     <el-row>
 
       <!-- DONE Transition Column-->
-      <el-col :span="16">
+      <el-col :span="15">
         <div style="width:100%; height: 120px;"></div>
       </el-col>
 
@@ -31,7 +31,7 @@
       </el-col>
 
       <!-- DONE Semantic Segmentation Model Chooser-->
-      <el-col :span="3">
+      <el-col :span="4">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
             <div style="font-size: 20px"><b>Model</b></div>

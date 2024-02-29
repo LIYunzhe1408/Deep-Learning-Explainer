@@ -3,7 +3,7 @@
     <el-row>
       <!-- Option Pictures-->
       <!-- TODO 增加更多可以切换的图片-->
-      <el-col :span="6" style="display:flex; margin: 5px 0 5px 0; justify-content: space-around">
+      <el-col :span="8" style="display:flex; margin: 5px 0 5px 0; justify-content: space-around">
         <div style="line-height: 120px"><i class="el-icon-caret-left"/></div>
 
         <div v-for="item in optionPics" :key="item.id">
@@ -20,7 +20,7 @@
       </el-col>
 
       <!-- DONE Transition Column-->
-      <el-col :span="10">
+      <el-col :span="7">
         <div style="width:100%; height: 120px;"></div>
       </el-col>
 
@@ -48,7 +48,7 @@
       </el-col>
 
       <!-- DONE Semantic Segmentation Model Chooser-->
-      <el-col :span="3">
+      <el-col :span="4">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
             <div style="font-size: 20px"><b>Model</b></div>

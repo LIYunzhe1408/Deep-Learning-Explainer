@@ -1,16 +1,16 @@
 <template>
   <div class="head">
     <el-row style="background-color: #1b1f23">
-      <el-col :span="3">
+      <el-col :span="4">
         <div class="mainTitle">EXPLAINER</div>
       </el-col>
 
-      <el-col :span="3">
+      <el-col :span="4">
         <div class="subTitle" style="font-size: 15px; height:30px">HIERARCHICAL CONCEPT-BASED</div>
         <div class="subTitle" style="font-family: Britannic"><i>Figure Out What DNN Is Doing</i></div>
       </el-col>
 
-      <el-col :span="13">
+      <el-col :span="11">
         <div style="width: 100%; height: 80px;"></div>
       </el-col>
 

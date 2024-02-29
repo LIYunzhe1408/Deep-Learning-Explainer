@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row gutter=40 type="flex" style="justify-content: center">
+    <el-row gutter=20 type="flex" style="justify-content: center">
       <!-- Left -->
-      <el-col  :span="7" >
+      <el-col  :span="9" >
         <div class="boxMain" style="height:500px;">
           <!-- DONE Topic-->
           <div class="topicMain">
@@ -30,7 +30,7 @@
       </el-col>
 
       <!--DONE Middle-->
-      <el-col  :span="5">
+      <el-col  :span="6">
         <div class="boxMain" style="height:170px;">
           <!-- Topic-->
           <div class="topicMain">
@@ -73,12 +73,12 @@
             <div style="font-size: 14px; color: gray">Determine which concept part contributes the most</div>
           </div>
 
-          <div style="display: flex; width: 100%; justify-content: space-evenly" >
+          <div style="display: flex; width: 100%; height:80%; justify-content: space-evenly" >
             <el-image
                       class="picBoxMain"
-                      style="height: 350px; width: 350px; margin-top: 40px"
+                      style="height: 80%; width: 60%; margin-top: 40px"
                       :src=this.explainedPic />
-            <div class="boxMain" style="width: 220px; margin-top: 40px;">
+            <div class="boxMain" style="width: 30%; height: 80%; margin-top: 40px;">
               <div style="margin-top: 20px; font-size: 20px; color: black"><b>Results</b></div>
               <div style="font-size: 12px; color: gray">Sorted By Contributions</div>
               <div style="height: 80%; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;" v-if="switched">
