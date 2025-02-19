@@ -6,8 +6,8 @@
         <div class="boxMain" style="height:500px;">
           <!-- DONE Topic-->
           <div class="topicMain">
-            <div style="font-size: 24px; margin-top: 20px"><b>IMAGE LEVEL</b></div>
-            <div style="font-size: 14px; color: gray">Handle Image</div>
+            <div style="font-size: 24px; margin-top: 20px"><b>{{$t('level.imageLevel')}}</b></div>
+            <div style="font-size: 14px; color: gray">{{$t('level.imageLevelHint')}}</div>
           </div>
 
 
@@ -19,7 +19,6 @@
                 <i class="el-icon-picture-outline"></i>
               </div>
             </el-image>
-          {{str}}
 
         </div>
       </el-col>
@@ -29,8 +28,8 @@
         <div class="boxMain" style="height:500px;">
           <!-- Topic-->
           <div class="topicMain">
-            <div style="font-size: 24px; margin-top: 20px"><b>OBJECT LEVEL</b></div>
-            <div style="font-size: 14px; color: gray">Concepts After Semantic Segmentation</div>
+            <div style="font-size: 24px; margin-top: 20px"><b>{{$t('level.objectLevel')}}</b></div>
+            <div style="font-size: 14px; color: gray">{{$t('level.objectLevelHint')}}</div>
           </div>
           <!-- Output-->
           <el-tooltip placement="left">
@@ -42,11 +41,13 @@
             <el-image class="picBoxMain"
                       style="width: 300px; height: 300px; margin-top: 40px; display: flex; justify-content: center; align-items: center"
                       :src=semanticPic.src>
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
+              <div slot="error" class="image-slot" style="text-align: center; line-height: 300px; font-size: 16px">
+                <b>Please select an image</b>
               </div>
             </el-image>
           </el-tooltip>
+          <el-tag>Hover over the image to view details</el-tag>
+
         </div>
       </el-col>
 
@@ -55,8 +56,8 @@
         <div class="boxMain" style="width: 100%; height:500px; ">
           <!-- Topic-->
           <div class="topicMain">
-            <div style="font-size: 24px; margin-top: 20px"><b>COMPONENT LEVEL</b></div>
-            <div style="font-size: 14px; color: gray">Concepts After Superpixel Segmentation</div>
+            <div style="font-size: 24px; margin-top: 20px"><b>{{$t('level.componentLevel')}}</b></div>
+            <div style="font-size: 14px; color: gray">{{$t('level.componentLevelHint')}}</div>
           </div>
 
           <el-tooltip placement="right">
@@ -68,91 +69,96 @@
             <el-image class="picBoxMain"
                       style="width: 300px; height: 300px; margin-top: 40px; display: flex; justify-content: center; align-items: center"
                       :src=pixelPic.src>
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
+              <div slot="error" class="image-slot" style="text-align: center; line-height: 300px; font-size: 16px">
+                <b>Please select an image</b>
               </div>
             </el-image>
           </el-tooltip>
-
+          <el-tag>Hover over the image to view details</el-tag>
         </div>
       </el-col>
-    </el-row>
-    <el-row style="display: flex; justify-content: end; margin-right: 120px">
-<!--      <el-button icon="el-icon-view">Tree</el-button>-->
-      <el-button icon="el-icon-search">Compare</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
 import bus from "@/common/bus"
+import axios from "axios";
+
 export default {
   name: "MainExtraction",
   data() {
     return {
-      predict: false,
-      selectModel: '1',
-      selectedPic:{src: require('@/assets/img-3.png'), id:'n02123045', class: 'tabby'},
-      semanticPic:{src: require('@/assets/tabby/Semantic Segmentation/6.png')},
-      pixelPic: {src: require('@/assets/tabby/SuperPixel Segmentation/6-p.png')},
-      subSSPics: [
-        {src: require('@/assets/tabby/Semantic Segmentation/6-0.jpg'), id:3},
-        {src: require('@/assets/tabby/Semantic Segmentation/6-1.jpg'), id:3},
-      ],
-      subPSPics: [
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-0.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-1.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-2.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-3.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-4.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-5.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-6.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-7.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-8.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-9.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-0-10.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-0.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-1.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-2.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-3.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-4.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-5.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-6.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-7.jpg'), id:3},
-        {src: require('@/assets/tabby/SuperPixel Segmentation/6-1-8.jpg'), id:3}
-      ],
-      explainedPic: '',
-      switched: false
+      selectedClass: '',
+      selectedModel: '',
+      selectedPic:{src: require('@/assets/image data/mainline/tabby/handle image/6.jpg'), id:'6', class: 'tabby'},
+      semanticPic:'',
+      pixelPic: '',
+      subSSPics: '',
+      subPSPics: ''
     }
   },
   methods: {
-    explainPic() {
-      this.explainedPic = this.switched ? require('@/assets/'+this.selectedPic.class+'.png') : ''
-    },
+    // getImgs(){semanticPic, pixelPic, subsspics, subpspics},
+    resetImages(){
+      // 初始，换pic，换model，换class
+      let params = {class: this.selectedPic.class, model: this.selectedModel.label, imageNum: this.selectedPic.id}
+      axios({
+        method: "get",
+        params: params,
+        url: 'http://localhost:8000/main/get_extraction_pics/'
+      }).then(res=> {
+        // console.log(res.data)
+        this.subSSPics = res.data["SS"]
 
+        this.semanticPic = res.data["semanticPic"]
+        this.pixelPic = res.data["pixelPic"]
+        this.semanticPic.src = 'data:image/jpeg;base64,' + this.semanticPic.src
+        this.pixelPic.src = 'data:image/jpeg;base64,' + this.pixelPic.src
+        for (let i = 0; i < this.subSSPics.length; i++){
+          this.subSSPics[i].src = 'data:image/jpeg;base64,' + this.subSSPics[i].src
+        }
+
+        this.subPSPics = res.data["PS"]
+        for (let i = 0; i < this.subPSPics.length; i++){
+          this.subPSPics[i].src = 'data:image/jpeg;base64,' + this.subPSPics[i].src
+        }
+        // console.log(this.semanticPic)
+      })
+          .catch(error => {
+            console.error('Error fetching image', error);
+          });
+    }
   },
   mounted() {
-    bus.$on("toMainPic", (data)=>{
-      this.switched = false
-      this.explainedPic = ''
-      this.selectedPic = data
-    })
-    bus.$on("toMainModel", (data)=>{
-      this.switched = false
-      this.explainedPic = ''
-      this.selectModel = data
-    })
-
-
+    // this.resetImages()
   },
-  computed: {
-    str: function () {
-      // this.subPics = []
-      // for (let i = 0; i < 8; i++) {
-      //   this.subPics.push(this.selectedPic)
-      // }
-    }
-  }
+  beforeMount() {
+
+    bus.$on("toExtractionInit", (data)=>{
+      console.log('hhhhhhhhhhhhhhhhhhhhhhhhh', data)
+      this.selectedPic = data.defaultPic
+      this.selectedClass = data.selectedClass
+
+      this.resetImages()
+    })
+    bus.$on("toExtractionModel", (data)=>{
+      console.log('aaaaaaaaaaa', data)
+      this.selectedModel = data
+
+      this.resetImages()
+    })
+    bus.$on("toEXPic", (data)=>{
+      console.log('sssssssssss', data)
+      this.selectedPic = data
+      this.resetImages()
+    })
+    bus.$on("toEXModel", (data)=>{
+      console.log('dddddddddddd', data)
+      this.selectedModel = data
+      this.resetImages()
+    })
+  },
 }
 </script>
 

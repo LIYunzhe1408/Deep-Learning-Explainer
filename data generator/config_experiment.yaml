@@ -1,0 +1,66 @@
+model args:
+  encode_dim: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  ps_batch_size: 10
+  epochs: 800
+
+img_num: 6
+seg_num: 15
+patch_num: 21
+seg_save_param: 0
+seg_batch_size: 10
+dataset_img_num: 50
+concept_num: 5
+
+image chooser:
+  tabby:
+      class name: "tabby"
+      identity: "n02123045"
+      class_dim: 281
+  bulbul:
+      class name: "bulbul"
+      identity: "n01560419"
+      class_dim: 16
+  sorrel:
+      class name: "sorrel"
+      identity: "n02389026"
+      class_dim: 339
+  siamese cat:
+    class name: "siamese cat"
+    identity: "n02123597"
+    class_dim: 284
+  bison:
+    class name: "bison"
+    identity: "n02410509"
+    class_dim: 347
+  zebra:
+    class name: "zebra"
+    identity: "n02391049"
+    class_dim: 340
+  speedboat:
+    class name: "speedboat"
+    identity: "n04273569"
+    class_dim: 814
+  schooner:
+    class name: "schooner"
+    identity: "n04147183"
+    class_dim: 780
+  scooter:
+    class name: "scooter"
+    identity: "n03791053"
+    class_dim: 670
+  minivan:
+    class name: "minivan"
+    identity: "n03977966"
+    class_dim: 734
+  sodabottle:
+    class name: "sodabottle"
+    identity: "n03983396"
+    class_dim: 737
+  studiocouch:
+    class name: "studiocouch"
+    identity: "n04344873"
+    class_dim: 831
+
+

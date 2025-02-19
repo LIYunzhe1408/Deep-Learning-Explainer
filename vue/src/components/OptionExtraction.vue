@@ -28,16 +28,16 @@
       <el-col :span="3">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
-            <div style="font-size: 20px"><b>Class</b></div>
-            <div style="font-size: 14px; color: gray;">To Explain</div>
+            <div style="font-size: 20px"><b>{{$t('option.class')}}</b></div>
+            <div style="font-size: 14px; color: gray;">{{$t('option.classHint')}}</div>
           </div>
 
-          <el-select filterable placeholder="Select Class"  v-model="selectClass">
+          <el-select filterable placeholder="Select Class"  v-model="selectedClass">
             <el-option v-for="item in classes"
                        :key="item"
                        :label="item"
                        :value="item"
-                       @click.native="selectModel(item)"> </el-option>
+                       @click.native="selectClass(item)"> </el-option>
           </el-select>
         </div>
       </el-col>
@@ -51,16 +51,16 @@
       <el-col :span="4">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
-            <div style="font-size: 20px"><b>Model</b></div>
-            <div style="font-size: 14px; color: gray;">Semantic Segmentation</div>
+            <div style="font-size: 20px"><b>{{$t('option.model')}}</b></div>
+            <div style="font-size: 14px; color: gray;">{{$t('option.SegHint')}}</div>
           </div>
 
-          <el-select filterable placeholder="Select Model"  v-model="selectModel">
+          <el-select filterable placeholder="Select Model"  v-model="selectedModelID">
             <el-option v-for="item in models"
                        :key="item.id"
                        :label="item.label"
                        :value="item.id"
-                       @click.native="selectModel(item.id)"> </el-option>
+                       @click.native="selectModel(item)"> </el-option>
           </el-select>
         </div>
       </el-col>
@@ -70,38 +70,77 @@
 
 <script>
 import bus from "@/common/bus"
+import axios from "axios";
 
 export default {
   name: "OptionExtraction",
   data() {
     return {
-      selectModel: '1',
-      selectClass: 'tabby',
+      // Get from ComparsionExtraction.vue
+      selectedModelID: '',
+      models: [],
+
+      // Assigned by admin
+      classes: ["tabby", "bulbul", "sorrel"],
+      selectedClass: 'tabby',
       picID: '6',
-      optionPics: [
-        {src: require('@/assets/tabby/4.png'), id: '4', class: "tabby"},
-        {src: require('@/assets/tabby/5.png'), id: '5', class: "tabby"},
-        {src: require('@/assets/tabby/6.png'), id: '6', class: "tabby"},
-      ],
-      classes: [
-        "tabby", "bulbul", "sorrel"
-      ],
-      models: [
-        {label: "DeepLabV3", id: '1'},
-        {label: "FCN", id: '2'},
-        {label: "LSRAPP", id: '3'}
-      ]
+
+
+      // TODO [1] Get from backend based on this.selectedClass 240420 DONE;
+      optionPics: [],
+
     }
   },
   methods: {
+    getOptionPics(){
+      // optionPics
+        axios({
+          method: "get",
+          params: {class: this.selectedClass},
+          url: 'http://localhost:8000/main/get_option_pics/'
+        }).then(res=> {
+          this.optionPics = res.data
+          for (let i = 0; i < this.optionPics.length; i++){
+             this.optionPics[i].src = 'data:image/jpeg;base64,' + this.optionPics[i].src
+          }
+          bus.$emit("toExtractionInit", {defaultPic:this.optionPics[2], selectedClass: this.selectedClass})
+        })
+            .catch(error => {
+              console.error('Error fetching image', error);
+            });
+    },
     selectPic(item) {
       this.picID = item.id
-      bus.$emit("toMainPic", item);
+      bus.$emit("toEXPic", item);
     },
-    selectModel(id) {
-      this.selectModel = id
-      bus.$emit("toMainModel", this.selectModel)
+    selectModel(item) {
+      // this.picID = '6'
+      // this.getOptionPics()
+      bus.$emit("toEXModel", item)
+    },
+    selectClass(item) {
+      this.picID = '6'
+      this.selectedClass = item
+      this.getOptionPics()
     }
+  },
+  beforeCreate() {
+    bus.$on("toOptionEx", (data)=>{
+      console.log("OptionExtraction data：", data[0])
+      this.selectedModelID = data[0].id
+      for (let i = 0; i < data.length; i++){
+        this.models.push(data[i])
+      }
+    })
+  },
+  created() {
+    this.getOptionPics()
+  },
+  mounted() {
+    this.getOptionPics()
+    bus.$emit("toExtractionModel", this.models[0])
+    // bus.$emit("toMainPic", this.optionPics[2]);
+    // bus.$emit("toMainModel", this.models[0]);
   }
 }
 </script>

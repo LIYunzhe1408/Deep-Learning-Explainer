@@ -1,12 +1,13 @@
 <template>
   <div class="home">
-    <Header/>
+    <Header v-if="this.loggedIn===2"/>
 
     <el-container>
-        <SideMenu/>
+        <SideMenu v-if="this.loggedIn===2"/>
 
-        <el-main style="background-color:  #f5f5f5">
+        <el-main >
           <router-view/>
+
         </el-main>
     </el-container>
   </div>
@@ -17,12 +18,16 @@ import Header from "@/views/Header.vue";
 import Option from "@/components/OptionMain.vue";
 import Main from '@/components/Main'
 import SideMenu from "@/views/SideMenu";
+import taskSubmission from "@/views/TaskSubmission";
+import bus from "@/common/bus";
+import logIn from "@/views/LogIn";
 export default {
   name: 'HomeView',
   data() {
     return {
       isCollapse:true,
-      asideW: "64px"
+      asideW: "64px",
+      loggedIn: 1
     }
   },
   methods: {
@@ -31,11 +36,22 @@ export default {
       this.asideW = this.isCollapse ? "64px" : "200px"
     }
   },
+  mounted() {
+    bus.$on("toHomeView", (data)=>{
+      this.loggedIn = data
+    })
+    // if (this.loggedIn !== 0)
+    this.$router.push("/login").catch(error => {
+      console.error('Error fetching image', error);
+    });
+  },
   components: {
     Header,
     Option,
     Main,
-    SideMenu
+    SideMenu,
+    taskSubmission,
+    logIn
   }
 }
 </script>
@@ -53,7 +69,7 @@ export default {
 }
 
 .el-menu-item.is-active{
-  background-color: #1890ff !important;
+  background-color: #003262 !important;
   border-radius: 10px !important;
 }
 

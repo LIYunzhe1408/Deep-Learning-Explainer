@@ -1,0 +1,40 @@
+model args:
+  encode_dim: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  ps_batch_size: 10
+  epochs: 800
+
+img_num: 6
+seg_num: 15
+patch_num: 21
+seg_save_param: 0
+seg_batch_size: 10
+dataset_img_num: 50
+concept_num: 5
+
+image chooser:
+  tabby:
+      class name: "tabby"
+      identity: "n02123045"
+      class_dim: 281
+  bulbul:
+      class name: "bulbul"
+      identity: "n01560419"
+      class_dim: 16
+  sorrel:
+      class name: "sorrel"
+      identity: "n02389026"
+      class_dim: 339
+  siamese cat:
+    class name: "siamese cat"
+    identity: "n02123597"
+    class_dim: 284
+  bison:
+    class name: "bison"
+    identity: "n02410509"
+    class_dim: 347
+  zebra:
+    class name: "zebra"
+    identity: "n02391049"
+    class_dim: 340

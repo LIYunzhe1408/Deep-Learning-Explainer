@@ -1,5 +1,11 @@
 # Debug Notes
 
+## TODO
+March 22 2024
+1. leader-line渲染出的线不应出现在其他页面； DONE
+2. 对象数据确定
+
+
 ## Vue组件间相互传值 Passing Values Between Vue Components
 Feb 25 2024
 ### Requirement background

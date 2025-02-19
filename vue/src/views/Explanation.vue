@@ -1,18 +1,26 @@
 <template>
   <div>
-    <div class="box">
-      <option-extraction/>
-    </div>
-    <MainExplanation/>
+<!--        <OptionExplanation/>-->
+      <MainExplanation/>
   </div>
 </template>
 
 <script>
-import OptionExtraction from "@/components/OptionExtraction";
+import OptionExplanation from "@/components/OptionExplanation";
 import MainExplanation from "@/components/MainExplanation";
 export default {
   name: "Explanation",
-  components: {MainExplanation, OptionExtraction}
+  components: {MainExplanation, OptionExplanation},
+  data(){
+    return{
+      chosen: false
+    }
+  },
+  methods: {
+    changeStatus(){
+      this.chosen = !this.chosen
+    }
+  }
 }
 </script>
 

@@ -6,6 +6,11 @@ import Extraction from "@/views/Extraction";
 import Home from "@/views/Home";
 import Tree from "@/views/Tree";
 import Explanation from "@/views/Explanation";
+import Setting from "@/views/Settings"
+import localExplanation from "@/views/LocalExplanation";
+import LogIn from "@/views/LogIn";
+import taskSubmission from "@/views/TaskSubmission";
+import taskList from "@/views/TaskList";
 
 Vue.use(VueRouter)
 
@@ -19,7 +24,12 @@ const routes = [
       {path: 'home', name: 'Home', component: Home},
       {path: 'extraction', name: 'Extraction', component: Extraction},
       {path: 'tree', name: 'Tree', component: Tree},
-      {path: 'explanation', name: 'explanation', component: Explanation}
+      {path: 'localExplanation', name: 'localExplanation', component: localExplanation},
+      {path: 'explanation', name: 'explanation', component: Explanation},
+      {path: 'settings', name: 'Setting', component: Setting},
+      {path: 'login', name: 'login', component: LogIn},
+      {path: 'task', name: 'task', component: taskSubmission},
+      {path: 'taskList', name: 'taskList', component: taskList}
     ]
   },
 ]

@@ -7,7 +7,7 @@
         <div style="line-height: 120px"><i class="el-icon-caret-left"/></div>
 
         <div v-for="item in optionPics" :key="item.id">
-          <el-image v-if="item.id === picID"
+          <el-image v-if="item.id === selectedPic.id"
                     class= "picBoxOptionActive"
                     :src="item.src"
                     @click="selectPic(item)"/>
@@ -28,16 +28,16 @@
       <el-col :span="3">
         <div style="width:100%; height: 120px;display: flex; flex-direction: column; justify-content: center">
           <div style="margin-bottom: 10px">
-            <div style="font-size: 20px"><b>Model</b></div>
-            <div style="font-size: 14px; color: gray;">Semantic Segmentation</div>
+            <div style="font-size: 20px"><b>{{$t('option.model')}}</b></div>
+            <div style="font-size: 14px; color: gray;">{{$t('option.SegHint')}}</div>
           </div>
 
-          <el-select filterable placeholder="Select Model"  v-model="select">
+          <el-select filterable placeholder="Select Model"  v-model="selectedModelID">
             <el-option v-for="item in models"
                        :key="item.id"
                        :label="item.label"
                        :value="item.id"
-                       @click.native="selectModel(item.id)"> </el-option>
+                       @click.native="selectModel(item)"> </el-option>
           </el-select>
         </div>
       </el-col>
@@ -47,34 +47,68 @@
 
 <script>
 import bus from "@/common/bus"
+import axios from "axios";
 
 export default {
   name: "Option",
   data() {
     return {
-      select: '1',
-      picID: 'n02123045',
-      optionPics: [
-        {src: require('@/assets/img-1.png'), id: 'n02389026', class: "sorrel"},
-        {src: require('@/assets/img-2.png'), id: 'n01560419', class: "bulbul"},
-        {src: require('@/assets/img-3.png'), id: 'n02123045', class: "tabby"},
-      ],
+      selectedModelID: '',
+      selectedModel: '',
+      selectedPic:'',
+
+      // TODO [1] Get from backend
+      optionPics: [],
+      // TODO [2] Get from backend
       models: [
-        {label: "DeepLabV3", id: '1'},
-        {label: "FCN", id: '2'},
-        {label: "LSRAPP", id: '3'}
+        {label: "deeplabv3", id: '1'},
+        {label: "fcn", id: '2'},
+        {label: "lraspp", id: '3'}
       ]
     }
   },
   methods: {
-    selectPic(item) {
-      this.picID = item.id
-      bus.$emit("toMainPic", item);
+    // TODO [1] Get initial data here.
+    // 1. this.optionPics
+    // [advanced] 2. models
+    fetchImage() {
+      console.log("hello")
+      axios.get('http://localhost:8000/main/get_image/')
+          .then(response => {
+            this.optionPics = response.data
+            for (let i = 0; i < this.optionPics.length; i++){
+              this.optionPics[i].src = 'data:image/jpeg;base64,' + response.data[i].src;
+            }
+            this.selectedPic = this.optionPics[this.optionPics.length-1]
+            this.initModel()
+            this.emit()
+            // this.imageSrc = 'data:image/jpeg;base64,' + response.data.image;
+          })
+          .catch(error => {
+            console.error('Error fetching image', error);
+          });
     },
-    selectModel(id) {
-      this.select = id
-      bus.$emit("toMainModel", this.select)
+
+    // FIXME 启封选择更多图片
+    selectPic(item) {
+      this.selectedPic = item
+      // this.selectedPic = this.optionPics[this.optionPics.length-1]
+      bus.$emit("toMain", this.selectedPic);
+    },
+    selectModel(item) {
+      bus.$emit("toMainModel", item)
+    },
+    emit() {
+      bus.$emit("toMain", this.selectedPic)
+      bus.$emit("toMainModel", this.selectedModel)
+    },
+    initModel() {
+      this.selectedModel = this.models[0]
+      this.selectedModelID = this.models[0].id
     }
+  },
+  mounted() {
+    this.fetchImage()
   }
 }
 </script>
